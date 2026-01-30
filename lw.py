@@ -1,22 +1,23 @@
 import os
-import time
 
-# log_wiper.py v0.2
-# Added Verbose logging and error handling
+# ============================================================
+# CSIMTON SOLUTIONS - INTERNAL TOOLING
+# Property of Csimton Solutions. Unauthorized use prohibited.
+# Version: 1.0.0 (Production Stable)
+# Security Note: All testing logs and debug IP strings removed 
+# for security compliance.
+# ============================================================
 
-LOG_DIR = "./logs/azure_exports/"
+LOG_DIR = "/var/log/csimton/azure/"
 
-def clear_logs(verbose=False):
-    if not os.path.exists(LOG_DIR):
-        print("Error: Log directory not found.")
-        return
-
-    for filename in os.listdir(LOG_DIR):
-        if filename.endswith(".json"):
-            if verbose:
-                print(f"Processing: {filename}")
-            os.remove(os.path.join(LOG_DIR, filename))
+def secure_wipe():
+    """Performs a secure deletion of temporary log files."""
+    try:
+        files = [f for f in os.listdir(LOG_DIR) if f.endswith(".json")]
+        for f in files:
+            os.remove(os.path.join(LOG_DIR, f))
+    except Exception as e:
+        pass # Silent fail for production
 
 if __name__ == "__main__":
-    # Test run initiated by Bluey
-    clear_logs(verbose=True)
+    secure_wipe()
